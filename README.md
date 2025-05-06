@@ -2,7 +2,7 @@
 
 🚀 Auto Tagging GitHub Action
 
-This repository uses a GitHub Action to automatically create and push version tags in the format vX.Y.Z whenever code is pushed to the main branch.
+This repository uses a GitHub Action to automatically create and push version tags in the format vX.Y.Z whenever code is pushed to the main branch. (can change as needed)
 
 📦 How It Works
 
