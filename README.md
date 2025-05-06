@@ -11,16 +11,21 @@ The action checks all existing Git tags matching the format vX.Y.Z.
 If no tags exist, it creates v1.0.0.
 If tags exist, it finds the latest tag and increments the patch version (e.g., v1.0.0 → v1.0.1).
 The new tag is created and pushed to GitHub.
+
+
 ✅ Example
 
 If the following tags exist:
 
-v1.0.0
+v1.0.0 (if none exists, will create this)
 v1.0.1
 v1.0.2
+
 Then on the next push to main, the action will create:
 
 v1.0.3
+
+
 📂 Workflow Location
 
 The GitHub Action is defined in:
@@ -29,6 +34,7 @@ The GitHub Action is defined in:
 🔐 Permissions
 
 This uses the default GITHUB_TOKEN to push tags. If your repository uses branch protection rules or you encounter permissions issues, consider creating a Personal Access Token (PAT) with contents: write and add it as a secret (PAT_TOKEN) in your repo settings.
+
 
 Then modify the push step like so:
 
