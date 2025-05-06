@@ -1,0 +1,44 @@
+name: Auto Tag Release
+
+on:
+  push:
+    branches:
+      - main  # change this if you use a different branch
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # fetch all history and tags
+
+    - name: Get latest version and create new tag
+      id: tag
+      run: |
+        # Get the latest tag that matches vX.Y.Z
+        latest_tag=$(git tag | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1)
+
+        echo "Latest tag: $latest_tag"
+
+        if [[ -z "$latest_tag" ]]; then
+          new_tag="v1.0.0"
+        else
+          # Extract version parts
+          IFS='.' read -r major minor patch <<<"${latest_tag#v}"
+          patch=$((patch + 1))
+          new_tag="v$major.$minor.$patch"
+        fi
+
+        echo "New tag: $new_tag"
+        echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
+
+    - name: Create Git tag and push
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git tag ${{ steps.tag.outputs.new_tag }}
+        git push origin ${{ steps.tag.outputs.new_tag }}
+
